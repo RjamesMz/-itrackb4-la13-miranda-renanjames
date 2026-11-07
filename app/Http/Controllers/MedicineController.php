@@ -1,10 +1,10 @@
 <?php
 
-
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Medicine;
 use App\Models\Type;
+use Illuminate\Support\Facades\Log;
 
 
 class MedicineController extends Controller
@@ -83,8 +83,17 @@ class MedicineController extends Controller
 
         $medicine->update($validated);
 
+          Log::info('Medicine updated', [
+                'id' => $medicine->id,
+                'type_id' => $medicine->type_id,
+        ]);
+
         return redirect()->route('medicines.index')
             ->with('success', 'Medicine updated successfully');
+
+
+
+
     }
 
     /**

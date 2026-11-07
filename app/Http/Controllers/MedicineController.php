@@ -14,7 +14,7 @@ class MedicineController extends Controller
         $types = Type::all();
         $type_id = $request->query('type_id');
 
-        $query = Medicine::with('type');
+        $query = Medicine::withh('type');
         if ($type_id) {
             $query = $query->where('type_id', $type_id);
         }
@@ -102,9 +102,12 @@ class MedicineController extends Controller
     public function destroy(Medicine $medicine)
     {
 
-    $medicine->delete();
+    abort_if($medicine->type->medicines()->count() === 1, 403);
 
+
+    $medicine->delete();
     return redirect()->route('medicines.index');
+
 
     }
 

@@ -1,12 +1,10 @@
 
-G1
-Route model binding needs two things to be true. Name both, and say what happens when only one of them is.
-The route parameter and controller parameter must have the same name, and the controller parameter must be type-hinted with the matching model. For example, `{medicine}` pairs with `Medicine $medicine`. If either condition is missing, Laravel cannot implicitly bind the route value to a `Medicine` model instance.
+H1
+The file at the top of the error page was inside `vendor` because Laravel was handling or reporting the error there, not necessarily because the framework code caused it. The error page's stack trace showed the application file and line where the problem originated. That application frame is the place to investigate and fix.
 
-G2
-Your Delete link opened the detail page instead of deleting anything. Explain why.
-A normal `<a>` link sends a GET request, but Laravel's resource `destroy` route expects a DELETE request. The link also needs the ID of the specific medicine, not the collection of medicine types. Use a form with `@csrf` and `@method('DELETE')` that targets the current `$medicine`.
+H2
+The `Log::info` entry can be searched later to confirm that a medicine was updated and to identify its medicine ID and type ID. The error page is a temporary view of one request and does not provide that searchable history. This log context can help trace what happened even after the request and its error page are gone.
 
-G3
-old() takes a second argument on your edit form. What would break if you left it out, and what would break if you used only it?
-The second argument provides the medicine's saved value when there is no previous form submission. Without it, fields on the edit form may appear blank when first opened. Using only the saved value instead of `old('field', $medicine->field)` means the user's submitted value will not be restored after validation fails.
+H3
+A 403 is better when the request is not allowed and the client should receive an explicit forbidden response, such as when deleting the last medicine of a type is prohibited. Redirecting back with a message is better for a browser-based user who can correct or understand the issue and continue using the form. In this interface, a redirect with a clear message would be more helpful for that recoverable deletion restriction.
+

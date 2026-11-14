@@ -1,10 +1,8 @@
+J1
+My HomeController is not a resource controller because its index() method only prepares and displays the application’s home page. It does not manage resource operations such as listing, viewing, creating, editing, updating, or deleting medicines.
 
-H1
-The file at the top of the error page was inside `vendor` because Laravel was handling or reporting the error there, not necessarily because the framework code caused it. The error page's stack trace showed the application file and line where the problem originated. That application frame is the place to investigate and fix.
+J2
+Before adding withQueryString(), the pagination links included only the page number. As a result, the controller received the new page number but lost the current search, filter, and sort parameters.
 
-H2
-The `Log::info` entry can be searched later to confirm that a medicine was updated and to identify its medicine ID and type ID. The error page is a temporary view of one request and does not provide that searchable history. This log context can help trace what happened even after the request and its error page are gone.
-
-H3
-A 403 is better when the request is not allowed and the client should receive an explicit forbidden response, such as when deleting the last medicine of a type is prohibited. Redirecting back with a message is better for a browser-based user who can correct or understand the issue and continue using the form. In this interface, a redirect with a clear message would be more helpful for that recoverable deletion restriction.
-
+J3
+A misspelled sort value can silently produce unintended results instead of clearly indicating that the input is invalid. The allowed list prevents this by accepting only permitted column names and falling back to sorting by name when an invalid value is provided

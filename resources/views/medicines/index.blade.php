@@ -20,6 +20,7 @@
                             <a href="{{ route('medicines.index', ['type_id' => $type->id]) }}"
                                 class="btn btn-outline-primary {{ request('type_id') == $type->id ? 'active' : '' }}">{{ $type->name }}</a>
                         @endforeach
+
                     </div>
 
                     <div class="btn-group" role="group">
@@ -29,6 +30,10 @@
                         <a href="{{ route('medicines.index', ['type' => request('type'), 'stock' => 'Full']) }}"
                             class="btn btn-outline-success {{ request('stock') === 'Full' ? 'active' : '' }}">Full</a>
                     </div>
+
+                    <a href="{{ route('medicines.create')}}" class="btn btn-success">
+                            <i class="bi bi-plus-lg me-1"></i>Add Medicine
+                        </a>
                 </div>
 
                 <div class="table-responsive">
@@ -88,4 +93,5 @@
             </div>
         </div>
     </div>
+    {{$medicines->links()}}
 @endsection

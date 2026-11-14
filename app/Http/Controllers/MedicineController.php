@@ -14,11 +14,11 @@ class MedicineController extends Controller
         $types = Type::all();
         $type_id = $request->query('type_id');
 
-        $query = Medicine::withh('type');
+        $query = Medicine::with('type');
         if ($type_id) {
             $query = $query->where('type_id', $type_id);
         }
-        $medicines = $query->get();
+        $medicines = $query->paginate(3);
         return view('medicines.index', compact('medicines', 'types'));
     }
 

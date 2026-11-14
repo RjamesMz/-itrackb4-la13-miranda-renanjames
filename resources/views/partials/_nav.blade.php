@@ -1,18 +1,26 @@
-<nav class="navbar navbar-expand-sm bg-body border-bottom mb-4 shadow-sm">
-    <div class="container">
-        <ul class="nav nav-pills gap-1">
+<div class="container my-3">
+<nav class="navbar navbar-expand-lg bg-primary rounded-3 mb-4" data-bs-theme="dark">
+    <div class="container-fluid">
+        <a href="{{ route('home') }}" class="navbar-brand fw-bold">
+            Medicine Inventory
+        </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="mainNav">
+        <ul class="navbar-nav">
             <li class="nav-item">
-                <a href="{{ route('medicines.index') }}"
-                   class="nav-link {{ request()->is('medicines*') && !request()->has('type') && !request()->has('stock') ? 'active' : '' }}">
-                    All
-                </a>
+                <a  class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}" 
+                href=" {{ route('home') }} ">Home</a>
             </li>
-            <li class="nav-item">
-                <a href="{{ route('medicines.filter') }}"
-                   class="nav-link {{ request()->is('medicines') && (request()->has('type') || request()->has('stock')) ? 'active' : '' }}">
-                    Filter
-                </a>
+
+             <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('medicines.*') ? 'active' : '' }}" 
+                 href=" {{ route('medicines.index') }}">Medicines</a>
             </li>
         </ul>
     </div>
+
+    </div>
 </nav>
+</div>

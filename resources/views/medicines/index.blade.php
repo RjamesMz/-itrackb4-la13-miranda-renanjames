@@ -13,23 +13,33 @@
 
             <div class="card-body">
                 <div class="d-flex flex-wrap gap-3 mb-4">
-                    <div class="btn-group" role="group">
-                        <a href="{{ route('medicines.index') }}"
-                            class="btn btn-outline-primary {{ !request('type_id') ? 'active' : '' }}">All</a>
-                        @foreach ($types as $type)
-                            <a href="{{ route('medicines.index', ['type_id' => $type->id]) }}"
-                                class="btn btn-outline-primary {{ request('type_id') == $type->id ? 'active' : '' }}">{{ $type->name }}</a>
-                        @endforeach
+                    Your list view
+                    <form method="GET" action="{{ route('medicines.index') }}">
+                        <input type="text" name="search" value="{{ request('search') }}">
 
-                    </div>
+                        <select name="type_id">
+                            <option value="">All</option>
+                            @foreach ($types as $type)
+                                <option value="{{ $type->id }}"
+                                    @selected(request('type_id') == $type->id)>{{ $type->name }}</option>
+                            @endforeach
+                        </select>
 
-                    <div class="btn-group" role="group">
-                        <a href="{{ route('medicines.index', ['type' => request('type'), 'stock' => 'Lowstock']) }}"
-                            class="btn btn-outline-danger {{ request('stock') === 'Lowstock' ? 'active' : '' }}">Low
-                            Stock</a>
-                        <a href="{{ route('medicines.index', ['type' => request('type'), 'stock' => 'Full']) }}"
-                            class="btn btn-outline-success {{ request('stock') === 'Full' ? 'active' : '' }}">Full</a>
-                    </div>
+                        <select name="is_available">
+                            <option value="">Any</option>
+                            <option value="1" @selected(request('is_available') === '1')>Available</option>
+                            <option value="0" @selected(request('is_available') === '0')>Unavailable</option>
+                        </select>
+
+                        <select name="sort">
+                            <option value="name" @selected(request('sort', 'name') === 'name')>Sort by Name</option>
+                            <option value="stock" @selected(request('sort') === 'stock')>Sort by Stock</option>
+                            <option value="expiry_date" @selected(request('sort') === 'expiry_date')>Sort by Expiry Date</option>
+                        </select>
+
+                        <button>Apply</button>
+                        <a href="{{ route('medicines.index') }}">Clear</a>
+                    </form>
 
                     <a href="{{ route('medicines.create')}}" class="btn btn-success">
                             <i class="bi bi-plus-lg me-1"></i>Add Medicine
@@ -44,6 +54,7 @@
                                 <th scope="col">Name</th>
                                 <th scope="col" class="text-center">Stock</th>
                                 <th scope="col">Type</th>
+                                <th scope="col">Availability</th>
                                 <th scope="col">Expiry Date</th>
                                 <th scope="col">Action</th>
 
@@ -67,6 +78,11 @@
                                     </td>
                                     <td><span class="badge bg-info-subtle text-info-emphasis">{{ $medicine->type->name }}</span>
                                     </td>
+                                    <td>
+                                        <span class="badge {{ $medicine->is_available ? 'bg-success' : 'bg-secondary' }}">
+                                            {{ $medicine->is_available ? 'Available' : 'Unavailable' }}
+                                        </span>
+                                    </td>
                                     <td>{{ $medicine['expiry_date'] }}</td>
                                     <td>
                                         <a class="btn btn-sm btn-outline-primary" href="{{ route('medicines.edit', $medicine) }}">Edit</a>
@@ -82,7 +98,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="5" class="text-center text-muted py-5">
+                                    <td colspan="7" class="text-center text-muted py-5">
                                         <span class="fw-bold">No Medicine Found</span>
                                     </td>
                                 </tr>

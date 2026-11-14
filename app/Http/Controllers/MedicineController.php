@@ -18,7 +18,24 @@ class MedicineController extends Controller
         if ($type_id) {
             $query = $query->where('type_id', $type_id);
         }
-        $medicines = $query->paginate(3);
+      
+        $search = $request->query('search');
+
+        if ($search) {
+            $query = $query->where('name', 'like', "%{$search}%");
+        }
+
+        $isAvailable = $request->query('is_available');
+        if ($isAvailable !== null && $isAvailable !== '') {
+            $query->where('is_available', $isAvailable);
+        }
+
+        $sort = $request->query('sort', 'name');
+        if (! in_array($sort, ['name', 'stock', 'expiry_date'])) {
+            $sort = 'name';
+        }
+
+        $medicines = $query->orderBy($sort)->paginate(3)->withQueryString();
         return view('medicines.index', compact('medicines', 'types'));
     }
 
